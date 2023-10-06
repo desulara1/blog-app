@@ -10,6 +10,17 @@ const postRouters=require("./routes/posts/posts");
 const pcommentRouters=require("./routes/comments/comments")
 const globalErrHandler=require("./middlewares/globalErrHandler")
 app.use(express.json()); //incoming message pass
+app.use(express.urlencoded({extended:true}))
+
+//render home page
+app.get("/",(req,res)=>{
+  res.render("index");
+})
+//configure ejs
+app.set("view engine","ejs");
+
+//serve static files
+app.use(express.static(__dirname + "/public"));
 // session config
 app.use(
     session({
@@ -22,6 +33,16 @@ app.use(
       }) 
     })
 );
+
+//save login user info into locals
+app.use((req,res,next)=>{
+  if(req.session.userAuth){
+    res.locals.userAuth=req.session.userAuth;
+  }else{
+    res.locals.userAuth=null;
+  }
+  next();
+});
 app.use(usersRouters);
 app.use(postRouters);
 app.use(pcommentRouters);

@@ -5,7 +5,9 @@ const registerUser=async(req,res,next)=>{
  const {fullName,email,password,profileImage,coverImage}=req.body
   //check all field
  if(!fullName || !email || !password){
-    res.json(next(appErr("All field required")));
+    //res.json(next(appErr("All field required")));
+   return res.render('users/register',
+    {error:"All field required"})
   }
  try{
  //check if user exist
@@ -27,10 +29,11 @@ const registerUser=async(req,res,next)=>{
     email,
     password:hashPassword,
    })
-   res.json({
-    status:"success",
-    user:user
-   })
+  //  res.json({
+  //   status:"success",
+  //   user:user
+  //  })
+  res.redirect("/api/v1/users/login")
   }catch(error){
   res.json(error.message);
   }

@@ -5,8 +5,9 @@ const login=async(req,res,next)=>{
     console.log(req.session);
     const {email,password}=req.body;
      if( !email || !password){
-       return next(appErr("Email and Password field are required"));
+       //return next(appErr("Email and Password field are required"));
      //return  res.json({status:"failed",message:"Email and Password field are required"});
+      return res.render('users/login',{error:"Email and Password field are required"})
       }
     try{
 
